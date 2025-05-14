@@ -16,25 +16,18 @@ public class PedidoDTO {
 
 
     public PedidoDTO(Pedido pedido) {
-        this.id = getId();
-        this.nome = getNome();
-        this.preco = getPreco();
+        this.id = pedido.getId();
+        this.nome = pedido.getNome();
+        this.preco = pedido.getPreco();
 
     }
-    public Pedido converteToPedido() {
-        Pedido novoPedido = new Pedido();
-        novoPedido.setId(getId());
-        novoPedido.setNome(getNome());
-        novoPedido.setPreco(getPreco());
-        return novoPedido;
+
+    public static PedidoDTO toEntity(PedidoDTO pedidoDTO) {
+        Pedido pedido = new Pedido();
+        pedido.setId(pedidoDTO.getId());
+        pedido.setNome(pedidoDTO.getNome());
+        pedido.setPreco(pedidoDTO.getPreco());
+        return pedidoDTO;
     }
 
-    public PedidoDTO converteToPedidoDTO() {
-        PedidoDTO novoPedidoDTO = new PedidoDTO();
-        novoPedidoDTO.setId(getId());
-        novoPedidoDTO.setNome(getNome());
-        novoPedidoDTO.setPreco(getPreco());
-        return novoPedidoDTO;
-
-    }
 }

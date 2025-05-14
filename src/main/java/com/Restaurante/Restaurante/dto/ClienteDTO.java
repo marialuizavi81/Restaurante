@@ -8,34 +8,25 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-
 public class ClienteDTO {
 
     private Long id;
     private String nome;
     private double carteira;
 
-    public ClienteDTO(Cliente cliente){
-        this.id = getId();
-        this.nome = getNome();
-        this.carteira = getCarteira();
-
+    public ClienteDTO(Cliente cliente) {
+        this.id = cliente.getId();
+        this.nome = cliente.getNome();
+        this.carteira = cliente.getCarteira();
     }
 
-    public Cliente converterToCliente(){
-        Cliente novoCliente = new Cliente();
-        novoCliente.setId(getId());
-        novoCliente.setNome(getNome());
-        novoCliente.setCarteira(getCarteira());
-        return novoCliente;
+    public static Cliente toEntity(ClienteDTO clienteDTO) {
+        Cliente cliente = new Cliente();
+        cliente.setId(clienteDTO.getId());
+        cliente.setNome(clienteDTO.getNome());
+        cliente.setCarteira(clienteDTO.getCarteira());
+        return cliente;
     }
 
-    public Cliente converteToClienteDTO(){
-        Cliente novoClienteDTO = new Cliente();
-        novoClienteDTO.setId(getId());
-        novoClienteDTO.setNome(getNome());
-        novoClienteDTO.setCarteira(getCarteira());
-        return novoClienteDTO;
-    }
 
 }
