@@ -1,6 +1,6 @@
 package com.Restaurante.Restaurante.repository;
 
-import com.Restaurante.Restaurante.model.Cliente;
+import com.Restaurante.Restaurante.models.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,8 +1,7 @@
 package com.Restaurante.Restaurante.controller;
 
-import com.Restaurante.Restaurante.dtos.CompraDTO;
-import com.Restaurante.Restaurante.dtos.PedidoDTO;
-import com.Restaurante.Restaurante.service.PedidoService;
+import com.Restaurante.Restaurante.dtos.ContaDTO;
+import com.Restaurante.Restaurante.service.ContaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,29 +9,29 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pedidos")
-public class PedidoController {
+@RequestMapping("/contas")
+public class ContaController {
 
     @Autowired
-    private PedidoService service;
+    private ContaService service;
 
     @GetMapping
-    public ResponseEntity<List<PedidoDTO>> findAll() {
+    public ResponseEntity<List<ContaDTO>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PedidoDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<ContaDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<PedidoDTO> create(@RequestBody PedidoDTO dto) {
+    public ResponseEntity<ContaDTO> create(@RequestBody ContaDTO dto) {
         return ResponseEntity.ok(service.create(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PedidoDTO> update(@PathVariable Long id, @RequestBody PedidoDTO dto) {
+    public ResponseEntity<ContaDTO> update(@PathVariable Long id, @RequestBody ContaDTO dto) {
         return ResponseEntity.ok(service.update(id, dto));
     }
 
@@ -40,10 +39,5 @@ public class PedidoController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/comprar")
-    public ResponseEntity<PedidoDTO> realizarCompra(@RequestBody CompraDTO compraDTO) {
-        return ResponseEntity.ok(service.realizarCompra(compraDTO));
     }
 }

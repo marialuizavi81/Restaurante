@@ -1,34 +1,67 @@
 package com.Restaurante.Restaurante.service;
 
-import com.Restaurante.Restaurante.dto.ClienteDTO;
-import com.Restaurante.Restaurante.model.Cliente;
+import com.Restaurante.Restaurante.dtos.ClienteDTO;
+import com.Restaurante.Restaurante.models.Cliente;
+import com.Restaurante.Restaurante.models.Conta;
 import com.Restaurante.Restaurante.repository.ClienteRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.Restaurante.Restaurante.repository.ContaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class ClienteService {
 
-    private final ClienteRepository ClienteRepository;
+    @Autowired
+    private ClienteRepository repository;
 
-    public ResponseEntity<List<ClienteDTO>> exibirCliente() {
-        List<Cliente> clientes = ClienteRepository.findAll();
-        List<ClienteDTO> dtos = clientes.stream()
-                .map(ClienteDTO::new)
-                .toList();
-        return ResponseEntity.ok(dtos);
+    @Autowired
+    private ContaRepository contaRepository;
+
+    public List<ClienteDTO> findAll() {
+        return repository.findAll().stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public ResponseEntity<ClienteDTO> salvarCliente(@RequestBody ClienteDTO clienteDTO) {
-        Cliente cliente = ClienteDTO.toEntity(clienteDTO);
-        Cliente salvo = ClienteRepository.save(cliente);
-        return ResponseEntity.ok(new ClienteDTO(salvo));
+    public ClienteDTO findById(Long id) {
+        return toDTO(repository.findById(id).orElseThrow());
+    }
+
+    public ClienteDTO create(ClienteDTO dto) {
+        Conta conta = contaRepository.findById(dto.getContaId()).orElseThrow();
+
+        Cliente cliente = new Cliente();
+        cliente.setNome(dto.getNome());
+        cliente.setCarteira(dto.getCarteira());
+        cliente.setConta(conta);
+
+        return toDTO(repository.save(cliente));
+    }
+
+    public ClienteDTO update(Long id, ClienteDTO dto) {
+        Cliente cliente = repository.findById(id).orElseThrow();
+        Conta conta = contaRepository.findById(dto.getContaId()).orElseThrow();
+
+        cliente.setNome(dto.getNome());
+        cliente.setCarteira(dto.getCarteira());
+        cliente.setConta(conta);
+
+        return toDTO(repository.save(cliente));
+    }
+
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
+    private ClienteDTO toDTO(Cliente cliente) {
+        return new ClienteDTO(
+                cliente.getId(),
+                cliente.getNome(),
+                cliente.getCarteira(),
+                cliente.getConta().getId()
+        );
     }
 }
